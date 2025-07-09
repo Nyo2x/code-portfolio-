@@ -1,39 +1,49 @@
-# 1. Create Ulauncher user themes folder
-mkdir -p ~/.config/ulauncher/user-themes
-
-# 2. Download macOS-style theme for Ulauncher
-git clone https://github.com/Ulauncher/ulauncher-macos-theme ~/.config/ulauncher/user-themes/macos
-
-# 3. Optional: Install Ulauncher if not already
+# Step 0: Install required tools
 sudo apt update
-sudo apt install -y gir1.2-keybinder-3.0 libwebkit2gtk-4.0-dev python3-pip
+sudo apt install -y git gir1.2-keybinder-3.0 libwebkit2gtk-4.0-dev python3-pip picom
+
+# Step 1: Install Ulauncher
 pip3 install --user ulauncher
 
-# 4. Launch Ulauncher so we can configure it
-ulauncher & disown
-
-# 5. Download popular Spotlight-like extensions
+# Step 2: Create themes and extensions folders
+mkdir -p ~/.config/ulauncher/user-themes
 mkdir -p ~/.local/share/ulauncher/extensions
 
+# Step 3: Download macOS-style theme (no login required)
+git clone --depth 1 https://github.com/Ulauncher/ulauncher-macos-theme.git ~/.config/ulauncher/user-themes/macos
+
+# Step 4: Download useful Spotlight-like extensions
 # Calculator
-git clone https://github.com/Ulauncher/ulauncher-calculator.git ~/.local/share/ulauncher/extensions/ulauncher-calculator
+git clone --depth 1 https://github.com/Ulauncher/ulauncher-calculator.git ~/.local/share/ulauncher/extensions/ulauncher-calculator
 
 # App Finder
-git clone https://github.com/brpaz/ulauncher-appfinder.git ~/.local/share/ulauncher/extensions/ulauncher-appfinder
+git clone --depth 1 https://github.com/brpaz/ulauncher-appfinder.git ~/.local/share/ulauncher/extensions/ulauncher-appfinder
 
 # Web Search
-git clone https://github.com/Ulauncher/ulauncher-websearch.git ~/.local/share/ulauncher/extensions/ulauncher-websearch
+git clone --depth 1 https://github.com/Ulauncher/ulauncher-websearch.git ~/.local/share/ulauncher/extensions/ulauncher-websearch
 
 # File Search
-git clone https://github.com/friday/ulauncher-file-search.git ~/.local/share/ulauncher/extensions/ulauncher-file-search
+git clone --depth 1 https://github.com/friday/ulauncher-file-search.git ~/.local/share/ulauncher/extensions/ulauncher-file-search
 
-# 6. Install optional visual compositor (for smooth fade)
-sudo apt install -y picom
+# Step 5: Launch Ulauncher
+~/.local/bin/ulauncher & disown
 
-# 7. Start picom with simple fade animation (can be added to startup later)
+# Step 6: (Optional) Start fade effect using Picom
 picom -b --fade-in-step=0.03 --fade-out-step=0.03 --fade-delta=10 --animations
 
-echo "✅ Done! Now:"
+# Step 7: Auto-start Ulauncher on login
+mkdir -p ~/.config/autostart
+cat <<EOF > ~/.config/autostart/ulauncher.desktop
+[Desktop Entry]
+Type=Application
+Exec=$HOME/.local/bin/ulauncher
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Ulauncher
+EOF
+
+echo "✅ Done!"
 echo "👉 Press Ctrl+Space to open Ulauncher"
 echo "⚙️  Click the gear icon → Appearance → choose 'macos'"
-echo "🔑 Change Hotkey to 'Super + Space' to match macOS"
+echo "🎯 Set hotkey to Super + Space for Spotlight style"
