@@ -1,49 +1,10 @@
-# Step 0: Install required tools
-sudo apt update
-sudo apt install -y git gir1.2-keybinder-3.0 libwebkit2gtk-4.0-dev python3-pip picom
-
-# Step 1: Install Ulauncher
-pip3 install --user ulauncher
-
-# Step 2: Create themes and extensions folders
-mkdir -p ~/.config/ulauncher/user-themes
-mkdir -p ~/.local/share/ulauncher/extensions
-
-# Step 3: Download macOS-style theme (no login required)
-git clone --depth 1 https://github.com/Ulauncher/ulauncher-macos-theme.git ~/.config/ulauncher/user-themes/macos
-
-# Step 4: Download useful Spotlight-like extensions
-# Calculator
-git clone --depth 1 https://github.com/Ulauncher/ulauncher-calculator.git ~/.local/share/ulauncher/extensions/ulauncher-calculator
-
-# App Finder
-git clone --depth 1 https://github.com/brpaz/ulauncher-appfinder.git ~/.local/share/ulauncher/extensions/ulauncher-appfinder
-
-# Web Search
-git clone --depth 1 https://github.com/Ulauncher/ulauncher-websearch.git ~/.local/share/ulauncher/extensions/ulauncher-websearch
-
-# File Search
-git clone --depth 1 https://github.com/friday/ulauncher-file-search.git ~/.local/share/ulauncher/extensions/ulauncher-file-search
-
-# Step 5: Launch Ulauncher
-~/.local/bin/ulauncher & disown
-
-# Step 6: (Optional) Start fade effect using Picom
-picom -b --fade-in-step=0.03 --fade-out-step=0.03 --fade-delta=10 --animations
-
-# Step 7: Auto-start Ulauncher on login
 mkdir -p ~/.config/autostart
-cat <<EOF > ~/.config/autostart/ulauncher.desktop
+cat <<EOF > ~/.config/autostart/plank.desktop
 [Desktop Entry]
 Type=Application
-Exec=$HOME/.local/bin/ulauncher
+Exec=plank
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
-Name=Ulauncher
+Name=Plank
 EOF
-
-echo "✅ Done!"
-echo "👉 Press Ctrl+Space to open Ulauncher"
-echo "⚙️  Click the gear icon → Appearance → choose 'macos'"
-echo "🎯 Set hotkey to Super + Space for Spotlight style"
