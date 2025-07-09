@@ -1,19 +1,18 @@
-# Step 1: Install AppMenu-related packages
+# Step 1: Install available AppMenu support packages
 sudo apt update && sudo apt install -y \
 appmenu-gtk3-module \
-appmenu-gtk-module \
 indicator-appmenu \
 libdbusmenu-gtk3-4 \
 xfce4-appmenu-plugin
 
-# Step 2: Configure environment variables for global menu
+# Step 2: Update environment to enable global menu support
 sudo sed -i '/GTK_MODULES=/d' /etc/environment
 sudo sed -i '/UBUNTU_MENUPROXY=/d' /etc/environment
-echo 'GTK_MODULES=appmenu-gtk-module' | sudo tee -a /etc/environment
+echo 'GTK_MODULES=appmenu-gtk3-module' | sudo tee -a /etc/environment
 echo 'UBUNTU_MENUPROXY=1' | sudo tee -a /etc/environment
 
-# Step 3: Reboot system to apply changes
-echo "✅ AppMenu packages installed and environment set."
-echo "🔁 Reboot your system now, then:"
+# Step 3: Reboot to apply all changes
+echo "✅ AppMenu installed (GTK3 only) and environment set."
+echo "🔁 Please reboot now, then:"
 echo "👉 Right-click top panel > Panel > Add New Items > 'AppMenu Plugin'"
-echo "👉 Move it to the left to mimic macOS global menu style."
+echo "👉 Move it to the left to mimic macOS style"
