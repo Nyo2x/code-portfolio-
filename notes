@@ -42,3 +42,6 @@ ulauncher
 Optionally set it to autostart:
 
 Settings → Session and Startup → Application Autostart → Add → Name: Ulauncher, Command: ulauncher
+
+
+wget https://github.com/Ulauncher/Ulauncher/releases/download/5.15.4/ulauncher_5.15.4_all.deb
