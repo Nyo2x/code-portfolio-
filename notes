@@ -1,10 +1,16 @@
-mkdir -p ~/.config/autostart
-cat <<EOF > ~/.config/autostart/plank.desktop
-[Desktop Entry]
-Type=Application
-Exec=plank
-Hidden=false
-NoDisplay=false
-X-GNOME-Autostart-enabled=true
-Name=Plank
-EOF
+# Update your system
+sudo apt update
+
+# Install lightdm-webkit2-greeter and git
+sudo apt install -y lightdm-webkit2-greeter git
+
+# Download the Glorious theme
+sudo git clone https://github.com/addy-dclxvi/lightdm-webkit2-theme-glorious.git /usr/share/lightdm-webkit/themes/glorious
+
+# Set lightdm-webkit2-greeter as the default greeter
+sudo sed -i 's/^greeter-session=.*/greeter-session=lightdm-webkit2-greeter/' /etc/lightdm/lightdm.conf || \
+echo -e "\n[Seat:*]\ngreeter-session=lightdm-webkit2-greeter" | sudo tee -a /etc/lightdm/lightdm.conf
+
+# Set the theme to glorious
+sudo sed -i 's/^webkit-theme=.*/webkit-theme=glorious/' /etc/lightdm/lightdm-webkit2-greeter.conf || \
+echo -e "\nwebkit-theme=glorious" | sudo tee -a /etc/lightdm/lightdm-webkit2-greeter.conf
