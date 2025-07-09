@@ -1,18 +1,39 @@
-# Step 1: Install available AppMenu support packages
-sudo apt update && sudo apt install -y \
-appmenu-gtk3-module \
-indicator-appmenu \
-libdbusmenu-gtk3-4 \
-xfce4-appmenu-plugin
+# 1. Create Ulauncher user themes folder
+mkdir -p ~/.config/ulauncher/user-themes
 
-# Step 2: Update environment to enable global menu support
-sudo sed -i '/GTK_MODULES=/d' /etc/environment
-sudo sed -i '/UBUNTU_MENUPROXY=/d' /etc/environment
-echo 'GTK_MODULES=appmenu-gtk3-module' | sudo tee -a /etc/environment
-echo 'UBUNTU_MENUPROXY=1' | sudo tee -a /etc/environment
+# 2. Download macOS-style theme for Ulauncher
+git clone https://github.com/Ulauncher/ulauncher-macos-theme ~/.config/ulauncher/user-themes/macos
 
-# Step 3: Reboot to apply all changes
-echo "✅ AppMenu installed (GTK3 only) and environment set."
-echo "🔁 Please reboot now, then:"
-echo "👉 Right-click top panel > Panel > Add New Items > 'AppMenu Plugin'"
-echo "👉 Move it to the left to mimic macOS style"
+# 3. Optional: Install Ulauncher if not already
+sudo apt update
+sudo apt install -y gir1.2-keybinder-3.0 libwebkit2gtk-4.0-dev python3-pip
+pip3 install --user ulauncher
+
+# 4. Launch Ulauncher so we can configure it
+ulauncher & disown
+
+# 5. Download popular Spotlight-like extensions
+mkdir -p ~/.local/share/ulauncher/extensions
+
+# Calculator
+git clone https://github.com/Ulauncher/ulauncher-calculator.git ~/.local/share/ulauncher/extensions/ulauncher-calculator
+
+# App Finder
+git clone https://github.com/brpaz/ulauncher-appfinder.git ~/.local/share/ulauncher/extensions/ulauncher-appfinder
+
+# Web Search
+git clone https://github.com/Ulauncher/ulauncher-websearch.git ~/.local/share/ulauncher/extensions/ulauncher-websearch
+
+# File Search
+git clone https://github.com/friday/ulauncher-file-search.git ~/.local/share/ulauncher/extensions/ulauncher-file-search
+
+# 6. Install optional visual compositor (for smooth fade)
+sudo apt install -y picom
+
+# 7. Start picom with simple fade animation (can be added to startup later)
+picom -b --fade-in-step=0.03 --fade-out-step=0.03 --fade-delta=10 --animations
+
+echo "✅ Done! Now:"
+echo "👉 Press Ctrl+Space to open Ulauncher"
+echo "⚙️  Click the gear icon → Appearance → choose 'macos'"
+echo "🔑 Change Hotkey to 'Super + Space' to match macOS"
