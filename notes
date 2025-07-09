@@ -1,16 +1,24 @@
-# Update your system
+# Update package list
 sudo apt update
 
-# Install lightdm-webkit2-greeter and git
-sudo apt install -y lightdm-webkit2-greeter git
+# Install required tools
+sudo apt install -y wget git
 
-# Download the Glorious theme
-sudo git clone https://github.com/addy-dclxvi/lightdm-webkit2-theme-glorious.git /usr/share/lightdm-webkit/themes/glorious
+# Download the .deb installer for lightdm-webkit2-greeter
+wget http://mirrors.kernel.org/ubuntu/pool/universe/l/lightdm-webkit2-greeter/lightdm-webkit2-greeter_2.2.5-0ubuntu2_all.deb
+
+# Install the downloaded greeter
+sudo dpkg -i lightdm-webkit2-greeter_2.2.5-0ubuntu2_all.deb
+
+# Fix any missing dependencies
+sudo apt --fix-broken install -y
 
 # Set lightdm-webkit2-greeter as the default greeter
 sudo sed -i 's/^greeter-session=.*/greeter-session=lightdm-webkit2-greeter/' /etc/lightdm/lightdm.conf || \
 echo -e "\n[Seat:*]\ngreeter-session=lightdm-webkit2-greeter" | sudo tee -a /etc/lightdm/lightdm.conf
 
-# Set the theme to glorious
-sudo sed -i 's/^webkit-theme=.*/webkit-theme=glorious/' /etc/lightdm/lightdm-webkit2-greeter.conf || \
-echo -e "\nwebkit-theme=glorious" | sudo tee -a /etc/lightdm/lightdm-webkit2-greeter.conf
+# Download the Glorious theme to the appropriate directory
+sudo git clone https://github.com/addy-dclxvi/lightdm-webkit2-theme-glorious.git /usr/share/lightdm-webkit/themes/glorious
+
+# Set the theme to Glorious in the greeter config
+sudo bash -c 'echo -e "\nwebkit-theme=glorious" >> /etc/lightdm/lightdm-webkit2-greeter.conf'
