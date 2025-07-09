@@ -1,2 +1,4 @@
+sudo apt remove ulauncher
+rm -rf ~/.config/ulauncher
 wget https://github.com/Ulauncher/Ulauncher/releases/download/5.15.4/ulauncher_5.15.4_all.deb
 sudo apt install ./ulauncher_5.15.4_all.deb
