@@ -1,24 +1,20 @@
-# Update package list
+# Step 1: Update system and install required packages
 sudo apt update
+sudo apt install -y git python3-gi python3-pyqt5 python3-pyqt5.qtwebengine liblightdm-gobject-dev libdbus-glib-1-dev libwebkit2gtk-4.0-dev meson ninja-build
 
-# Install required tools
-sudo apt install -y wget git
+# Step 2: Clone and build the Web Greeter from source
+git clone --depth 1 https://github.com/MerkeX/lightdm-webkit2-greeter.git /tmp/web-greeter
+cd /tmp/web-greeter
+meson build --prefix=/usr
+ninja -C build
+sudo ninja -C build install
 
-# Download the .deb installer for lightdm-webkit2-greeter
-wget http://mirrors.kernel.org/ubuntu/pool/universe/l/lightdm-webkit2-greeter/lightdm-webkit2-greeter_2.2.5-0ubuntu2_all.deb
+# Step 3: Download themes (includes macOS-like themes such as litarvan)
+sudo git clone --depth 1 https://github.com/MerkeX/lightdm-webkit2-greeter-themes.git /usr/share/lightdm-webkit/themes
 
-# Install the downloaded greeter
-sudo dpkg -i lightdm-webkit2-greeter_2.2.5-0ubuntu2_all.deb
-
-# Fix any missing dependencies
-sudo apt --fix-broken install -y
-
-# Set lightdm-webkit2-greeter as the default greeter
+# Step 4: Set lightdm-webkit2-greeter as the default greeter
 sudo sed -i 's/^greeter-session=.*/greeter-session=lightdm-webkit2-greeter/' /etc/lightdm/lightdm.conf || \
 echo -e "\n[Seat:*]\ngreeter-session=lightdm-webkit2-greeter" | sudo tee -a /etc/lightdm/lightdm.conf
 
-# Download the Glorious theme to the appropriate directory
-sudo git clone https://github.com/addy-dclxvi/lightdm-webkit2-theme-glorious.git /usr/share/lightdm-webkit/themes/glorious
-
-# Set the theme to Glorious in the greeter config
-sudo bash -c 'echo -e "\nwebkit-theme=glorious" >> /etc/lightdm/lightdm-webkit2-greeter.conf'
+# Step 5: Set the theme (you can change 'litarvan' to another if you like)
+echo -e "\nwebkit-theme=litarvan" | sudo tee -a /etc/lightdm/lightdm-webkit2-greeter.conf
