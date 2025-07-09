@@ -1,20 +1,12 @@
-# Step 1: Update system and install required packages
+# 1. Install Slick Greeter
 sudo apt update
-sudo apt install -y git python3-gi python3-pyqt5 python3-pyqt5.qtwebengine liblightdm-gobject-dev libdbus-glib-1-dev libwebkit2gtk-4.0-dev meson ninja-build
+sudo apt install -y slick-greeter lightdm-settings
 
-# Step 2: Clone and build the Web Greeter from source
-git clone --depth 1 https://github.com/MerkeX/lightdm-webkit2-greeter.git /tmp/web-greeter
-cd /tmp/web-greeter
-meson build --prefix=/usr
-ninja -C build
-sudo ninja -C build install
+# 2. Set Slick as the default greeter
+echo "greeter-session=slick-greeter" | sudo tee /etc/lightdm/lightdm.conf
 
-# Step 3: Download themes (includes macOS-like themes such as litarvan)
-sudo git clone --depth 1 https://github.com/MerkeX/lightdm-webkit2-greeter-themes.git /usr/share/lightdm-webkit/themes
+# 3. Optional: Install macOS-style theme & icons
+sudo apt install -y arc-theme papirus-icon-theme
 
-# Step 4: Set lightdm-webkit2-greeter as the default greeter
-sudo sed -i 's/^greeter-session=.*/greeter-session=lightdm-webkit2-greeter/' /etc/lightdm/lightdm.conf || \
-echo -e "\n[Seat:*]\ngreeter-session=lightdm-webkit2-greeter" | sudo tee -a /etc/lightdm/lightdm.conf
-
-# Step 5: Set the theme (you can change 'litarvan' to another if you like)
-echo -e "\nwebkit-theme=litarvan" | sudo tee -a /etc/lightdm/lightdm-webkit2-greeter.conf
+# 4. Open LightDM Settings GUI to customize look (login background, logo, etc.)
+lightdm-settings
